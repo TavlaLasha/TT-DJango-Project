@@ -1,6 +1,56 @@
-from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 
+class CustomerManager(BaseUserManager):
+    def create_user(self, email, username, firstname, lastname, password=None):
+        #Creates and saves a User with the given email and password.
+
+        if not email:
+            raise ValueError('Users must have an email address')
+        if not username:
+            raise ValueError('Users must have an username')
+        if not firstname:
+            raise ValueError('Users must have an first name')
+        if not lastname:
+            raise ValueError('Users must have an last name')
+
+        user = self.model(
+            email=self.normalize_email(email),
+            username = username,
+            firstname=firstname,
+            lastname=lastname,
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_staffuser(self, email, username, firstname, lastname, password):
+        
+        user = self.create_user(
+            email=self.normalize_email(email),
+            username = username,
+            firstname=firstname,
+            lastname=lastname,
+            password=password,
+        )
+        user.is_staff = True
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, username, firstname, lastname, password):
+        
+        user = self.create_user(
+            email=self.normalize_email(email),
+            username = username,
+            firstname=firstname,
+            lastname=lastname,
+            password=password,
+        )
+        user.is_staff = True
+        user.is_admin = True
+        user.save(using=self._db)
+        return user
 
 
 class Customers(AbstractBaseUser):
@@ -11,19 +61,21 @@ class Customers(AbstractBaseUser):
     email = models.EmailField(verbose_name="email", db_column='Email', unique=True, max_length=60)  # Field name made lowercase.
     phone = models.CharField(db_column='Phone', unique=True, max_length=25)  # Field name made lowercase.
     password = models.CharField(db_column='Password', max_length=128)  # Field name made lowercase.
-    date_joined = models.DateField(auto_now_add=True, db_column='RegisterDate')  # Field name made lowercase.
-    last_login = models.DateField(auto_now_add=True, db_column='LastLogin')  # Field name made lowercase.
-    is_active = models.BooleanField(db_column='IsActive', default=False)  # Field name made lowercase. This field type is a guess.
-    is_admin = models.BooleanField(db_column='IsAdmin', default=False)  # Field name made lowercase. This field type is a guess.
-    is_staff = models.BooleanField(db_column='IsStaff', default=False)  # Field name made lowercase. This field type is a guess.
+    date_joined = models.DateTimeField(auto_now_add=True, db_column='date_joined')  # Field name made lowercase.
+    last_login = models.DateTimeField(auto_now=True, db_column='last_login')  # Field name made lowercase.
+    is_active = models.BooleanField(db_column='is_active', default=True)  # Field name made lowercase. This field type is a guess.
+    is_admin = models.BooleanField(db_column='is_admin', default=False)  # Field name made lowercase. This field type is a guess.
+    is_staff = models.BooleanField(db_column='is_staff', default=False)  # Field name made lowercase. This field type is a guess.
     
 
     class Meta:
         # managed = False
-        db_table = 'Cutomers'
+        db_table = 'Customers'
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['email','firstname', 'lastname']
+
+    objects = CustomerManager()
 
     def get_full_name(self):
         return self.firstname+' '+self.lastname
@@ -37,24 +89,12 @@ class Customers(AbstractBaseUser):
     def has_perm(self, perm, obj=None):
         #"Does the user have a specific permission?"
         # Simplest possible answer: Yes, always
-        return True
+        return self.is_admin
 
     def has_module_perms(self, app_label):
         #"Does the user have permissions to view the app `app_label`?"
         # Simplest possible answer: Yes, always
         return True
-
-    @property
-    def is_staff(self):
-        #"Is the user a member of staff?"
-        return self.is_staff
-
-    @property
-    def is_admin(self):
-        #"Is the user a admin member?"
-        return self.is_admin
-
-    objects = UserManager()
 
  
 class Attributes(models.Model):
@@ -172,13 +212,13 @@ class Status(models.Model):
         db_table = 'Status'
 
 
-class Payment(models.Model):
+class PaymentType(models.Model):
     paymentid = models.AutoField(db_column='PaymentID', blank=True, primary_key=True)  # Field name made lowercase.
     payment = models.CharField(db_column='Payment', max_length=50)  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'Payment'
+        db_table = 'PaymentType'
 
 
 class Orders(models.Model):
@@ -189,7 +229,7 @@ class Orders(models.Model):
     shippostalcode = models.CharField(db_column='ShipPostalCode', max_length=50)  # Field name made lowercase.
     address = models.CharField(db_column='Address', max_length=50)  # Field name made lowercase.
     statusid = models.ForeignKey(Status, db_column='StatusID', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
-    paymenttype = models.ForeignKey(Payment, db_column='PaymentType', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
+    paymenttype = models.ForeignKey(PaymentType, db_column='PaymentType', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
     statusdate = models.IntegerField(db_column='StatusDate')  # Field name made lowercase.
 
     class Meta:

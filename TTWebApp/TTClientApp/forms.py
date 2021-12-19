@@ -28,23 +28,32 @@ class UserRegisterForm(forms.ModelForm):
     error_class = 'error'
     email = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'E-Mail', 'class': 'form-control', 'data-aos':'fade-up', 'data-aos-delay':'200'}))
     username = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control', 'data-aos':'fade-up', 'data-aos-delay':'200'}))
+    firstname = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'First Name', 'class': 'form-control', 'data-aos':'fade-up', 'data-aos-delay':'200'}))
+    lastname = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'Last Name', 'class': 'form-control', 'data-aos':'fade-up', 'data-aos-delay':'200'}))
     password = forms.CharField(label='', widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control', 'data-aos':'fade-up', 'data-aos-delay':'200'}))
     conf_password = forms.CharField(label='', widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password', 'class': 'form-control', 'data-aos':'fade-up', 'data-aos-delay':'200'}))
-    agreesPolicy = forms.BooleanField(label='Agree')
+    phone = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'Phone', 'class': 'form-control', 'data-aos':'fade-up', 'data-aos-delay':'200'}))
+    agreesPolicy = forms.BooleanField(label='I agree with Terms & Policy')
 
     class Meta:
         model = User
         fields = [
             'email',
             'username',
+            'firstname',
+            'lastname',
             'password',
-            'conf_password'
+            'conf_password',
+            'phone'
         ]
 
     def clean(self, *args, **kwargs):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         email = self.cleaned_data.get('email')
+        firstname = self.cleaned_data.get('firstname')
+        lastname = self.cleaned_data.get('lastname')
+        phone = self.cleaned_data.get('phone')
         conf_password = self.cleaned_data.get('conf_password')
         agreesPolicy = self.cleaned_data.get('agreesPolicy')
 
@@ -62,5 +71,11 @@ class UserRegisterForm(forms.ModelForm):
         username_qs = User.objects.filter(username=username)
         if username_qs.exists():
             raise forms.ValidationError('This username is already being used')
+
+        if not phone.isdecimal():
+            raise forms.ValidationError('Phone should only contain numbers')
+
+        if not (firstname.isalpha() and lastname.isalpha()):
+            raise forms.ValidationError('Name should only contain letters')
             
         return super(UserRegisterForm, self).clean(*args, **kwargs)
