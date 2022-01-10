@@ -70,10 +70,8 @@ def statistics_view(request):
 
 def get_recent_sales():
     data = []
-    unixTime = time.time()
-    # daabrunebs shekvetebs bolo 10 dgidan {Current unix timestamp - 10 days (864000))
-    orderAge = unixTime - 864000
-    orderList = Orders.objects.filter(orderdate__gt=orderAge)
+    time_threshold = datetime.datetime.now(timezone.utc) - datetime.timedelta(days=10)
+    orderList = Orders.objects.filter(orderdate__gt=time_threshold)
 
     if orderList.count() != 0:
         for order in orderList:

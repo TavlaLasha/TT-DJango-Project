@@ -224,7 +224,7 @@ class PaymentType(models.Model):
 class Orders(models.Model):
     orderid = models.AutoField(db_column='OrderID', blank=True, primary_key=True)  # Field name made lowercase.
     cutomerid = models.ForeignKey(Customers, db_column='CutomerID', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
-    orderdate = models.BigIntegerField(db_column='OrderDate')  # Field name made lowercase.
+    orderdate = models.DateField(auto_now_add=True, db_column='OrderDate')  # Field name made lowercase.
     cityid = models.ForeignKey(Cities, db_column='CityID', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
     shippostalcode = models.CharField(db_column='ShipPostalCode', max_length=50)  # Field name made lowercase.
     address = models.CharField(db_column='Address', max_length=50)  # Field name made lowercase.
