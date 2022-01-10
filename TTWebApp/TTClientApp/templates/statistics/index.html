@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics display</title>
+</head>
+<body>
+    {#  es ubralod magalitia, tu vinme gaaketebs, yvela orderis fieldi da damatebiti fieldebi order objects eqneba  #}
+    {#  da shedzlebs gamoiyenos  #}
+    <h1>This is a sample page for displaying statistics!</h1>
+    <h1>Orders from last 10 days: </h1>
+    {% for order in orders %}
+        <hr>
+        order id: {{ order.orderid }}
+        <br>
+        customer name: {{ order.customerName }}
+        <br>
+        order status: {{ order.status }}
+        <br>
+        payment method: {{ order.payment }}
+        <br>
+        Amount Payed: {{ order.total_price }}
+        <hr>
+    {% endfor %}
+
+    <br>
+    <h1>Sales Sum:</h1>
+    Lifetime Sales: ${{ salesSum }}
+
+
+    <br>
+    <h1>Recent Customers (10 days):</h1>
+    {% for customer in newCustomers %}
+        <hr>
+        First Name: {{ customer.firstname }}
+        <br>
+        Last Name: {{ customer.lastname }}
+        <br>
+        Date Joined: {{ customer.date_joined }}
+        <hr>
+    {% endfor %}
+</body>
+</html>

@@ -213,7 +213,7 @@ class Status(models.Model):
 
 
 class PaymentType(models.Model):
-    paymentid = models.AutoField(db_column='PaymentID', blank=True, primary_key=True)  # Field name made lowercase.
+    paymentid = models.AutoField(db_column='PaymentTypeID', blank=True, primary_key=True)  # Field name made lowercase.
     payment = models.CharField(db_column='Payment', max_length=50)  # Field name made lowercase.
 
     class Meta:
@@ -224,13 +224,14 @@ class PaymentType(models.Model):
 class Orders(models.Model):
     orderid = models.AutoField(db_column='OrderID', blank=True, primary_key=True)  # Field name made lowercase.
     cutomerid = models.ForeignKey(Customers, db_column='CutomerID', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
-    orderdate = models.DateField(auto_now_add=True, db_column='OrderDate')  # Field name made lowercase.
+    orderdate = models.BigIntegerField(db_column='OrderDate')  # Field name made lowercase.
     cityid = models.ForeignKey(Cities, db_column='CityID', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
     shippostalcode = models.CharField(db_column='ShipPostalCode', max_length=50)  # Field name made lowercase.
     address = models.CharField(db_column='Address', max_length=50)  # Field name made lowercase.
     statusid = models.ForeignKey(Status, db_column='StatusID', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
-    paymenttype = models.ForeignKey(PaymentType, db_column='PaymentType', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
+    paymenttype = models.ForeignKey(PaymentType, db_column='PaymentTypeId', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
     statusdate = models.IntegerField(db_column='StatusDate')  # Field name made lowercase.
+    total_price = models.DecimalField(db_column='total_price', decimal_places=2, max_digits=255)
 
     class Meta:
         managed = False
