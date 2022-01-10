@@ -106,7 +106,7 @@ def get_sales_sum():
 
 
 def get_new_customers():
-    time_threshold = datetime.datetime.now(timezone.utc) - datetime.timedelta(days=100)
+    time_threshold = datetime.datetime.now(timezone.utc) - datetime.timedelta(days=10)
 
     return Customers.objects.filter(date_joined__gt=time_threshold)
 
