@@ -29,7 +29,6 @@
     <h1>Sales Sum:</h1>
     Lifetime Sales: ${{ salesSum }}
 
-
     <br>
     <h1>Recent Customers (10 days):</h1>
     {% for customer in newCustomers %}
@@ -39,6 +38,37 @@
         Last Name: {{ customer.lastname }}
         <br>
         Date Joined: {{ customer.date_joined }}
+        <hr>
+    {% endfor %}
+
+    <br>
+    {#  aq .product attributi sheicavs yvelafers rac product cxrilshia..  #}
+    <h1>Most Sold Items:</h1>
+    {% for item in mostSold %}
+        <hr>
+        total sales: {{ item.salesCount }}
+        <br>
+        item name: {{ item.product.productname }}
+        <hr>
+    {% endfor %}
+
+    <hr>
+    <h1>Least Sold Items:</h1>
+    {% for item in leastSold %}
+        <hr>
+        total sales: {{ item.salesCount }}
+        <br>
+        item name: {{ item.product.productname }}
+        <hr>
+    {% endfor %}
+
+    <hr>
+    <h1>Most Popular Categories:</h1>
+    {% for category in popularCategories %}
+        <hr>
+        category name: {{ category.name }}
+        <br>
+        total sales: {{ category.count }}
         <hr>
     {% endfor %}
 </body>

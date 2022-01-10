@@ -231,7 +231,6 @@ class Orders(models.Model):
     statusid = models.ForeignKey(Status, db_column='StatusID', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
     paymenttype = models.ForeignKey(PaymentType, db_column='PaymentTypeId', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
     statusdate = models.IntegerField(db_column='StatusDate')  # Field name made lowercase.
-    total_price = models.DecimalField(db_column='total_price', decimal_places=2, max_digits=255)
 
     class Meta:
         managed = False
