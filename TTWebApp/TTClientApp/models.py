@@ -69,7 +69,7 @@ class Customers(AbstractBaseUser):
     
 
     class Meta:
-        # managed = False
+        managed = False
         db_table = 'Customers'
 
     USERNAME_FIELD = 'username'
