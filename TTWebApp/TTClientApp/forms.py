@@ -23,6 +23,21 @@ class UserLoginForm(forms.Form):
         
         return super(UserLoginForm, self).clean(*args, **kwargs)
 
+class PasswordResetFrom(forms.Form):
+    email = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'E-Mail', 'class': 'form-control', 'data-aos':'fade-up', 'data-aos-delay':'200'}))
+
+    def clean(self, *args, **kwargs):
+        email = self.cleaned_data.get('email')
+        validate_email(email)
+        if User.objects.filter(email=email).exists():
+            user = User.objects.filter(email=email).get()
+            if not user.is_active:
+                raise forms.ValidationError('This user is not active')
+        else:
+            raise forms.ValidationError('This user does not exist')
+        
+        return super(PasswordResetFrom, self).clean(*args, **kwargs)
+
 
 class UserRegisterForm(forms.ModelForm):
     error_class = 'error'
