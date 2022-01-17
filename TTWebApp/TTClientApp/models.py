@@ -153,7 +153,7 @@ class Product(models.Model):
     price = models.FloatField(db_column='Price', max_length=50, null=True)  # Field name made lowercase.
     supllierid = models.ForeignKey(Supllier, db_column='SupllierID', on_delete=models.SET_NULL, blank=True, null=True)  # Field name made lowercase.
     serialnumber = models.CharField(db_column='SerialNumber', max_length=50, null=True)  # Field name made lowercase.
-    discription = models.TextField(db_column='Discription', null=True)  # Field name made lowercase.
+    description = models.TextField(db_column='Description', null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
