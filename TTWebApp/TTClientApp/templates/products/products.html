@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %}Products{% endblock %}
+{% block page_content %}
+{% if page_obj %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+    <table style="width: 80%; text-align: center; border: 1px solid black;">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>name</td>
+                <td>CategoryID</td>
+                <td>Picture</td>
+                <td>Price</td>
+                <td>SupplierID</td>
+                <td>Serial Number</td>
+                <td>Description</td>
+                <td>Actions</td>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for item in page_obj %}
+                <tr>
+                    <td>{{item.productid}}</td>
+                    <td>{{item.productname}}</td>
+                    <td>{{item.categoryid.categoryid}}</td>
+                    <td>{{item.picture}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.supllierid.supllierid}}</td>
+                    <td>{{item.serialnumber}}</td>
+                    <td>{{item.description}}</td>
+                    <td>
+                        <a href="{% url 'product_update' item.productid %}"><i class="far fa-edit"></i></a>
+                        <!-- <a href="edit/{{item.productid}}">Edit</a> -->
+                        <a href="{% url 'product_delete' item.productid %}"><i style="color: red;" class="far fa-trash-alt"></i></a>
+                        <a href="{% url 'product_price_change' item.productid %}">Change Price</a>
+                        <a href="{% url 'product_details' item.productid %}">Details</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{%else %}
+    <h2><a href="all">See All Products</a></h2>
+    <h1>Add Products</h1>
+    {% for message in messages %}
+        <p class="messages">{{message}}</p>
+    {% endfor%}
+
+
+    <form method="post">
+        {% csrf_token %}
+        {% for item in form %}
+            {{item.label}} <br>
+            {{item}} <br><br>
+            
+        {% endfor %}
+        <input type="submit" value="Save">
+    </form>
+{% endif %}
+
+
+{% endblock %}

@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/79fbebef68.js" crossorigin="anonymous"></script>
     {% load static %}
     <title>Tech Trade Store</title>
+    <style>
+        td{
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body>
     <!-- HEADER -->
@@ -18,6 +24,9 @@
                 <ul class="navbar-nav ml-lg-auto">
                     <li class="nav-item">
                         <a href="{% url 'home' %}" class="nav-link smoothScroll">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Products/add" class="nav-link smoothScroll">Add Products</a>
                     </li>
                     {% if request.user.is_authenticated %}
                         {{ request.user.get_username }}!
