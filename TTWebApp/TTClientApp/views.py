@@ -266,8 +266,9 @@ def productDetails(request, id=0):
     return render(request, 'products/detailView.html', {'prod': prod})
 
 def cart(request):
+    cartItems = Customerwishlist.objects.all()
     
-    return render(request, 'cart/cart.html', {'cart': Customerwishlist.objects.all()})
+    return render(request, 'cart/cart.html', {'cart': cartItems})
 
 class ProductsUpdateView(UpdateView):
     model = models.Product

@@ -2,5 +2,7 @@
 {% load static %}
 {% block page_title %}Products{% endblock %}
 {% block page_content %}
-    {{cart}}
+    {% for item in cart %}
+        {{item}}
+    {% endfor%}
 {% endblock %}
