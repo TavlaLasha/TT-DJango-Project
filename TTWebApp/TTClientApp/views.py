@@ -1,9 +1,10 @@
 import datetime
+from multiprocessing import context
 from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum
 from django.utils import timezone
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm, UserLoginForm, PasswordResetFrom
+from .forms import CategoryForm, UserRegisterForm, UserLoginForm, PasswordResetFrom
 from .models import Orders, Cities, Customers, PaymentType, Status, Orderdetails, Product, Category
 from pprint import pprint
 import time
@@ -20,7 +21,43 @@ from django.utils.encoding import force_bytes
 
 
 def index(request):
-    return render(request, 'index.html')
+    context = {'get' : Category.objects.all()} 
+    return render(request, 'index.html', context)
+ 
+def get_category(request): 
+    context = {'get' : Category.objects.all()} 
+    return render(request, "category.html", context)
+
+def add_category(request):
+    c = request.POST.get("categoryname")
+    ns = Category(categoryname = c) 
+    ns.save()
+    context = {'k1': ns.categoryname}  
+    return render(request, "category.html",  context ) 
+
+def delete_data(request, id):
+    if request.method == 'POST':
+        C = Category.objects.get(pk=id)
+        C.delete()
+    return redirect('/')
+        # return redirect('/')
+        
+        
+
+def update_data(request, id):
+    if request.method == 'POST':
+        C = Category.objects.get(pk=id)
+        form = CategoryForm(request.POST, instance=C)
+        if form.is_valid():
+            form.save()
+    else:
+        C = Category.objects.get(pk=id)
+        form = CategoryForm(instance=C)   
+    return render(request, "updatecategory.html", {'form' : form})
+
+
+
+
 
 
 def login_view(request):

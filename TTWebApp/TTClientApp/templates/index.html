@@ -1,7 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block page_title %}Home{% endblock %}
-{% block page_content %}
-<h1>Hi! HTML will be here soon</h1>
+{% block page_content %} 
+ 
+{% if get %} 
+ <p> Categories </p> 
+<select>
+
+     <option selected display = "true" placeholder="Categories"> </option> 
+    {% for g_d in get %}
+    <option value="{{ g_d.categoryname }}">{{ g_d.categoryname }}  
+        </option>
+    
+    {% endfor %}
+</select>
+
+
+
+
+
+
+{% else %}
+<h4> No Records </h4>
+{% endif %}
 
 {% endblock %}

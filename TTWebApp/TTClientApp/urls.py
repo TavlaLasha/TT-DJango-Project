@@ -5,6 +5,19 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('', views.index, name='home'),
+    
+    
+    #  << ---------------------------------------- BARBIE ---------------------------------------- >>
+    
+    path('category', views.get_category, name='category'),
+    path('category', views.add_category, name='category'),
+    path('delete/<int:id>/',views.delete_data, name='deletedata'),
+    path('<int:id>/up',views.update_data , name='updatedata'),
+    
+    
+    #  << ---------------------------------------- BARBIE ---------------------------------------- >>
+    
+    
     path('accounts/login/', views.login_view, name='login'),
     path('accounts/register/', views.register_view, name='register'),
     path('accounts/logout/', views.logout_view, name='logout'),

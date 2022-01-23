@@ -19,6 +19,35 @@
                     <li class="nav-item">
                         <a href="{% url 'home' %}" class="nav-link smoothScroll">Home</a>
                     </li>
+                   <li class="nav-item">
+                      <a href="{% url 'category' %}" class="nav-link smoothScroll">Category</a>  
+                    </li>  
+
+                      <script>
+                        /* When the user clicks on the button, 
+                        toggle between hiding and showing the dropdown content */
+                        function myFunction() {
+                          document.getElementById("myDropdown").classList.toggle("show");
+                        }
+                        
+                        // Close the dropdown if the user clicks outside of it
+                        window.onclick = function(event) {
+                          if (!event.target.matches('.dropbtn')) {
+                            var dropdowns = document.getElementsByClassName("dropdown-content");
+                            var i;
+                            for (i = 0; i < dropdowns.length; i++) {
+                              var openDropdown = dropdowns[i];
+                              if (openDropdown.classList.contains('show')) {
+                                openDropdown.classList.remove('show');
+                              }
+                            }
+                          }
+                        }
+                        </script>
+
+                        
+
+
                     {% if request.user.is_authenticated %}
                         {{ request.user.get_username }}!
                         <li class="nav-item">
@@ -39,6 +68,10 @@
         </div>
     </nav>
     
-    {% block page_content %}{% endblock %}
+    {% block page_content %} 
+        
+    {% endblock %}
 </body>
 </html>
+
+
