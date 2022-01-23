@@ -6,7 +6,7 @@ from django.db.models import Sum
 from django.utils import timezone
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, UserLoginForm, PasswordResetFrom, AddProductForm
-from .models import Customerwishlist, Orders, Cities, Customers, PaymentType, Status, Orderdetails, Product, Category, Supllier
+from .models import Customercart, Customerwishlist, Orders, Cities, Customers, PaymentType, Status, Orderdetails, Product, Category, Supllier
 from pprint import pprint
 import time
 
@@ -23,7 +23,7 @@ from django.utils.encoding import force_bytes
 # For Products
 from django.contrib import messages
 from django.http.response import HttpResponseRedirect
-from django.views.generic.edit import UpdateView, DeleteView
+from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from django.core.paginator import Paginator
 from django.views.generic.list import ListView
 
@@ -253,23 +253,40 @@ def productsAll(request):
 
 
 def productDetails(request, id=0):
-    if request.method == 'POST': 
-        print('fdfdfd')
+    if request.method == 'POST' and 'addtowishlist' in request.POST:
         obj = Customerwishlist()
-        obj.firstname = Customers.objects.get(firstname='bruh')
+        obj.customerid = Customers.objects.get(firstname='bruh')
         obj.productid = Product.objects.get(productid=id)
         obj.adddate = datetime.now()
         obj.save()
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/Wishlist')
+    elif request.method == 'POST' and 'addtocart' in request.POST:
+        obj = Customercart()
+        obj.customerid = Customers.objects.get(firstname='bruh')
+        obj.productid = Product.objects.get(productid=id)
+        obj.count = 1
+        obj.adddate = datetime.now()
+        obj.save()
+        return HttpResponseRedirect('/Cart')
     else:
         prod = Product.objects.get(productid = id)
     return render(request, 'products/detailView.html', {'prod': prod})
 
 def cart(request):
-    cartItems = Customerwishlist.objects.all()
+    cartItems = Customercart.objects.all()
+    print(cartItems)
     
-    return render(request, 'cart/cart.html', {'cart': cartItems})
+    return render(request, 'cart/cart.html', {'items': cartItems})
+def wishlist(request):
+    wishlistItems = Customerwishlist.objects.all()
+    
+    return render(request, 'wishlist/wishlist.html', {'items': wishlistItems})
 
+
+def buy(request):
+    if request.method == 'POST':
+        return HttpResponseRedirect('/')
+    return render(request, 'buy/buy.html', {})
 class ProductsUpdateView(UpdateView):
     model = models.Product
     fields = '__all__'
@@ -287,3 +304,9 @@ class ProductsPriceChange(UpdateView):
     fields = ['price']
     success_url ="/Products/all"
     template_name = 'products/deleteProduct.html'
+
+class OrderCreateView(CreateView):
+    model = Orders
+    fields = '__all__'
+    success_url = "/"
+    template_name = 'buy/buy.html'
