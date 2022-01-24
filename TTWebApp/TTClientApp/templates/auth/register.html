@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %}Register{% endblock %}
+{% block page_content %}
+<form method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Register">
+</form>
+{% endblock %}
