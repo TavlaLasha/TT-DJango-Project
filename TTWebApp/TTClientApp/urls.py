@@ -16,6 +16,7 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     path('wishlist/', views.wishlist, name='wishlist'),
     path('account/', views.account, name='account'),
+    path('orders/', views.orders, name='orders'),
 
     #For Auth
     path('accounts/login/', views.login_view, name='login'),

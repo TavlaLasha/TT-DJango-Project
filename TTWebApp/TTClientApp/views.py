@@ -111,7 +111,10 @@ def wishlist(request):
     return render(request, 'product/wishlist.html')
 
 def account(request):
-    return render(request, 'account.html')
+    return render(request, 'account/account.html')
+
+def orders(request):
+    return render(request, 'account/orders.html')
 
 def about(request):
     return render(request, 'aboutus.html')
