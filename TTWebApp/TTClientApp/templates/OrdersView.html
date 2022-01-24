@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %}Home{% endblock %}
+{% block page_content %}
+
+{% for r in results %}
+    <td> {{ r.cutomerid }}</td>
+    <td> {{ r.orderdate }}</td>
+{% endfor%}
+
+
+{% endblock %}

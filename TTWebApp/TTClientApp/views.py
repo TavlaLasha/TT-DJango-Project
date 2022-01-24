@@ -201,11 +201,9 @@ def statistics_view(request):
 
     return render(request, 'statistics/index.html', data)
 
-
 def get_recent_sales():
     data = []
-    time_threshold = datetime.datetime.now(
-        timezone.utc) - datetime.timedelta(days=10)
+    time_threshold = datetime.datetime.now(timezone.utc) - datetime.timedelta(days=10)
     orderList = Orders.objects.filter(orderdate__gt=time_threshold)
 
     if orderList.count() != 0:
@@ -241,8 +239,7 @@ def get_sales_sum():
 
 
 def get_new_customers():
-    time_threshold = datetime.datetime.now(
-        timezone.utc) - datetime.timedelta(days=10)
+    time_threshold = datetime.datetime.now(timezone.utc) - datetime.timedelta(days=10)
 
     return Customers.objects.filter(date_joined__gt=time_threshold)
 
@@ -254,8 +251,7 @@ def get_product_sales_statistics(orderType, limit=False):
     if orderType == "mostSold":
         order = "-salesCount"
 
-    sortedItems = Orderdetails.objects.filter().values(
-        "productid").annotate(salesCount=Sum("quantity")).order_by(order)
+    sortedItems = Orderdetails.objects.filter().values("productid").annotate(salesCount=Sum("quantity")).order_by(order)
 
     if limit:
         sortedItems = sortedItems[:10]
@@ -278,15 +274,13 @@ def get_most_popular_categories():
     for item in itemSales:
         libData = item
         libData['category_id'] = item["product"].categoryid.categoryid
-        libData['category_name'] = Category.objects.get(
-            categoryid=item["product"].categoryid.categoryid).categoryname
+        libData['category_name'] = Category.objects.get(categoryid=item["product"].categoryid.categoryid).categoryname
 
         salesLib.append(libData)
 
     for sale in salesLib:
         if sale['category_id'] in salesPerCategory:
-            salesPerCategory[sale['category_id']
-                             ['count']] += sale['salesCount']
+            salesPerCategory[sale['category_id']['count']] += sale['salesCount']
         else:
             salesPerCategory[sale['category_id']] = {
                 'count': sale['salesCount'],
@@ -391,3 +385,10 @@ class OrderCreateView(CreateView):
     fields = '__all__'
     success_url = "/"
     template_name = 'buy/buy.html'
+def get_orders_by_account(request):
+    results = Orders.objects.filter(cutomerid=5)
+
+    return render(request, 'OrdersView.html', {'results': results})
+
+class orderlist(ListView):
+    orders = Orders.objects.filter(cutomerid=5)

@@ -48,4 +48,8 @@ urlpatterns = [
     path('Cart', views.cart, name='cart'),
     path('Wishlist', views.wishlist, name='wishlist'),
     path('Buy', views.OrderCreateView.as_view(), name='buy'),
+
+    #Bujo
+    path('getorders/', views.get_orders_by_account, name='get_orders_by_account'),
+    path('OrdersView/', views.orderlist.as_view()),
 ]

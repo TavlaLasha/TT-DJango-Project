@@ -21,11 +21,9 @@ User = get_user_model()
 # # print(CHOICES)
 
 
-
-
 class UserLoginForm(forms.Form):
-    username = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': ''}))
-    password = forms.CharField(label='', widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': ''}))
+    username = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control', 'data-aos':'fade-up', 'data-aos-delay':'200'}))
+    password = forms.CharField(label='', widget=forms.PasswordInput(attrs={'placeholder': 'Password', 'class': 'form-control', 'data-aos':'fade-up', 'data-aos-delay':'200'}))
 
     def clean(self, *args, **kwargs):
         username = self.cleaned_data.get('username')
