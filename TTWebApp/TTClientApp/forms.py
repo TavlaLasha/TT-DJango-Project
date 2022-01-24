@@ -1,9 +1,17 @@
 from django import forms
 from django.contrib.auth import (authenticate, get_user_model)
 from django.core.validators import validate_email
+from .models import Category
 
 from TTClientApp.models import Category, Product
 
+
+class CategoryForm (forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['categoryname' ]
+
+    
 User = get_user_model()
 # For Products
 # CHOICES = [Category.objects.all()]
@@ -11,6 +19,8 @@ User = get_user_model()
 # # for i in categories:
 # #     CHOICES.append(i.categoryid, i.categoryname)
 # # print(CHOICES)
+
+
 
 
 class UserLoginForm(forms.Form):

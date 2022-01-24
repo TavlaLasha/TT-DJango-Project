@@ -1,5 +1,6 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.urls import reverse
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 class CustomerManager(BaseUserManager):
     def create_user(self, email, username, firstname, lastname, password=None):
@@ -104,15 +105,24 @@ class Attributes(models.Model):
     class Meta:
         managed = False
         db_table = 'Attributes'
+ 
 
 
 class Category(models.Model):
     categoryid = models.AutoField(db_column='CategoryID', blank=True, primary_key=True)  # Field name made lowercase.
     categoryname = models.CharField(db_column='CategoryName', max_length=50)  # Field name made lowercase.
-
+    # slug = models.SlugField(unique=True)
+ 
+    
     class Meta:
         managed = False
         db_table = 'Category'
+        
+    def __str__(self):
+            return self.categoryname
+
+    def get_absolute_url(self):
+        return reverse('category_detail', kwargs={'slug': self.slug})    
 
 
 class Categoryattribute(models.Model):
@@ -144,7 +154,7 @@ class Supllier(models.Model):
         managed = False
         db_table = 'Supllier'
 
-        
+
 class Product(models.Model):
     productid = models.AutoField(db_column='ProductID', blank=True, primary_key=True)  # Field name made lowercase.
     productname = models.CharField(db_column='ProductName', max_length=80)  # Field name made lowercase.
@@ -158,6 +168,11 @@ class Product(models.Model):
     class Meta:
         managed = False
         db_table = 'Product'
+        
+    def __str__(self):
+        return self.productname    
+
+
 
 
 class Productattribute(models.Model):

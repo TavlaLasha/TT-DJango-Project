@@ -17,7 +17,17 @@ urlpatterns = [
     path('wishlist/', views.wishlist, name='wishlist'),
     path('account/', views.account, name='account'),
     path('orders/', views.orders, name='orders'),
-
+    
+    #  << ---------------------------------------- BARBIE ---------------------------------------- >>
+    
+    path('category', views.get_category, name='category'),
+    path('category', views.add_category, name='category'),
+    path('delete/<int:id>/',views.delete_data, name='deletedata'),
+    path('<int:id>/up',views.update_data , name='updatedata'),
+    
+    
+    #  << ---------------------------------------- BARBIE ---------------------------------------- >>
+    
     #For Auth
     path('accounts/login/', views.login_view, name='login'),
     path('accounts/register/', views.register_view, name='register'),

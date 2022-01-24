@@ -367,5 +367,42 @@
     </div>
 </div>
 <!-- End Instagram Feed  -->
+<!-- {% block page_content %}  -->
+ 
+{% if get %} 
+ <p> Categories </p> 
+<select>
+
+     <option selected display = "true" placeholder="Categories"> </option> 
+    {% for g_d in get %}
+
+    <option value="{{ g_d.categoryid }}"> {{ g_d.categoryname }}   </option> 
+    
+    {% endfor %}
+
+</select>
+{% comment %}  
+<ul>
+    {% for category in get %}
+    <li>{{ category.categoryname }}</li>
+   
+        <ul>
+            {% for product in getp %} 
+
+            <li> {{ product.productname }}</li> 
+
+            {% endfor %}
+        </ul>
+        
+    
+    {% endfor %}
+</ul> {% endcomment %}
+
+
+
+
+{% else %}
+<h4> No Records </h4>
+{% endif %}
 
 {% endblock %}

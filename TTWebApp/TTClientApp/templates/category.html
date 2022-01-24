@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+ 
+
+{% block page_content %}
+
+<h4> Add New Category</h4>
+<form action="" method="post">
+  {% csrf_token %} 
+  <label for="fname">Category:</label>
+  <input type="text" id="category" name="categoryname"> <br><br> 
+  <input type="submit" value="Submit">
+</form>
+
+{% if get %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Category</th> 
+        <th scope="col">Action</th> 
+      </tr>
+    </thead>
+    <tbody>
+      {% for g_d in get %}
+        <tr>
+          <th scope="row">{{g_d.categoryid }}</th>
+          <td>{{ g_d.categoryname }}</td> 
+          <td>
+{% comment %} 
+            <a href=""> Edit </a> 
+            
+             {% endcomment %}
+
+
+
+
+            
+            {% csrf_token %} 
+            <a href="{% url 'updatedata' g_d.categoryid %}" > Edit </a>
+            
+            <form action=" {% url 'deletedata' g_d.categoryid  %} " method="post">
+                {% csrf_token %}
+                <input type="submit" value = "Delete" >
+              </form> 
+          </td>
+        </tr> 
+      {% endfor %}
+    
+    </tbody>
+  </table>
+   {% else %}
+   <h4> No Records </h4>
+ {% endif %}
+
+
+
+ 
+  {% endblock %}
