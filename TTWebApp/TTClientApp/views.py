@@ -21,8 +21,21 @@ from django.utils.encoding import force_bytes
 
 
 def index(request):
-    context = {'get' : Category.objects.all()} 
-    return render(request, 'index.html', context)
+    c = Category.objects.all()
+    p = Product.objects.all()
+    ck = {'get':c,
+          'getp': p}
+  
+    return render(request, 'index.html', ck)
+ 
+def category_products(request, id, slug):
+    category = Category.objects.all()
+    products = Product.objects.filter(categoryid=slug)
+    context_ =  {
+        'category':category,
+        'products' :products 
+                }
+    return render(request, 'category_products.html', context_)
  
 def get_category(request): 
     context = {'get' : Category.objects.all()} 
@@ -57,7 +70,7 @@ def update_data(request, id):
 
 
 
-
+#-----------------------------------------------------------------------------------
 
 
 def login_view(request):
