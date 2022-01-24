@@ -2,7 +2,16 @@ from django import forms
 from django.contrib.auth import (authenticate, get_user_model)
 from django.core.validators import validate_email
 
+from TTClientApp.models import Category, Product
+
 User = get_user_model()
+# For Products
+# CHOICES = [Category.objects.all()]
+# # categories = Category.objects.all()
+# # for i in categories:
+# #     CHOICES.append(i.categoryid, i.categoryname)
+# # print(CHOICES)
+
 
 class UserLoginForm(forms.Form):
     username = forms.CharField(label='', widget=forms.TextInput(attrs={'placeholder': 'Username', 'class': ''}))
@@ -94,3 +103,23 @@ class UserRegisterForm(forms.ModelForm):
             raise forms.ValidationError('Name should only contain letters')
             
         return super(UserRegisterForm, self).clean(*args, **kwargs)
+
+
+class AddProductForm(forms.Form):
+    name = forms.CharField(label='Product Name', max_length=80, required=True)
+    # categoryID = forms.ChoiceField(label='Category', choices=[CHOICES], required=True)
+    categoryID = forms.IntegerField(label='Category', required=True)
+    picture = forms.FileField(label='Picture', required=True)
+    price = forms.FloatField(label='Price', required=False)
+    supplierid = forms.IntegerField(label='Supplier', required=False)
+    serialnumber = forms.CharField(label='Serial Number', max_length=50, required=False)
+    description = forms.CharField(label='Description', required=False)
+
+    # # productid = models.AutoField(db_column='ProductID', blank=True, primary_key=True)  # Field name made lowercase.
+    # productname = models.CharField(db_column='ProductName', max_length=80)  # Field name made lowercase.
+    # categoryid = models.ForeignKey(Category, db_column='CategoryID', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
+    # picture = models.CharField(db_column='Picture', max_length=255)  # Field name made lowercase.
+    # price = models.FloatField(db_column='Price', max_length=50, null=True)  # Field name made lowercase.
+    # supllierid = models.ForeignKey(Supllier, db_column='SupllierID', on_delete=models.SET_NULL, blank=True, null=True)  # Field name made lowercase.
+    # serialnumber = models.CharField(db_column='SerialNumber', max_length=50, null=True)  # Field name made lowercase.
+    # discription = models.TextField(db_column='Discription', null=True)  # Field name made lowercase.

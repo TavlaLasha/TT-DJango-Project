@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page_title %}wishlist{% endblock %}
+{% block page_content %}
+    {% for item in items %}
+        {{item.productid}}
+        {{item.adddate}}
+    {% endfor%}
+{% endblock %}
