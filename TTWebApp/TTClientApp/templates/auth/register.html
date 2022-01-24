@@ -2,9 +2,58 @@
 {% load static %}
 {% block page_title %}Register{% endblock %}
 {% block page_content %}
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Register">
-</form>
+<div class="wrapper">
+    <div class="title-text">
+       <div class="title">
+          Register
+       </div>
+    </div>
+    <div class="form-container">
+       <div class="form-inner">
+          <form class="signup" method="POST">
+            {% csrf_token %}
+             <div class="field">
+                {{form.email}}
+                {{form.email.errors}}
+             </div>
+             <div class="field">
+                {{form.username}}
+                {{form.username.errors}}
+             </div>
+             <div class="field">
+                {{form.firstname}}
+                {{form.firstname.errors}}
+             </div>
+             <div class="field">
+                {{form.lastname}}
+                {{form.lastname.errors}}
+            </div>
+            <div class="field">
+                {{form.password}}
+                {{form.password.errors}}
+            </div>
+            <div class="field">
+                {{form.conf_password}}
+                {{form.conf_password.errors}}
+            </div>
+            <div class="field">
+                {{form.phone}}
+                {{form.phone.errors}}
+            </div>
+            <div class="terms-field">
+                {{form.agreesPolicy.errors}}
+                {{form.agreesPolicy.label_tag}}
+                {{form.agreesPolicy}}
+            </div>
+            <div class="field btn">
+                <div class="btn-layer"></div>
+                <input type="submit" value="Signup">
+            </div>
+            <div class="signup-link">
+                Already a member? <a href="{% url 'login' %}">Log In now</a>
+             </div>
+          </form>
+       </div>
+    </div>
+ </div>
 {% endblock %}

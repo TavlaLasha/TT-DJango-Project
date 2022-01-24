@@ -2,10 +2,37 @@
 {% load static %}
 {% block page_title %}Log In{% endblock %}
 {% block page_content %}
-<form method="POST">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" value="Log In">
-</form>
-<a href="{% url 'password_reset' %}">Forgot Password?</a>
+<div class="wrapper">
+    <div class="title-text">
+       <div class="title">
+          Login
+       </div>
+    </div>
+    <div class="form-container">
+       <div class="form-inner">
+          <form class="login" method="POST">
+            {% csrf_token %}
+            <div class="field">
+                {{form.username.errors}}
+                {{form.username}}
+             </div>
+             <div class="field">
+                {{form.password.errors}}
+                {{form.password}}
+             </div>
+             <div class="pass-link">
+                <a href="{% url 'password_reset' %}">Forgot Password?</a>
+             </div>
+             <div class="field btn">
+                <div class="btn-layer"></div>
+                <input type="submit" value="Login">
+             </div>
+             <div class="signup-link">
+                Not a member? <a href="{% url 'register' %}">Signup now</a>
+             </div>
+          </form>
+       </div>
+    </div>
+ </div>
+ <!-- login page end-->
 {% endblock %}

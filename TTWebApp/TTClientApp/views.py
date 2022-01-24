@@ -95,6 +95,32 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
+def shop(request):
+    return render(request, 'product/shop.html')
+
+def product(request):
+    return render(request, 'product/product-details.html')
+
+def cart(request):
+    return render(request, 'product/cart.html')
+
+def checkout(request):
+    return render(request, 'product/checkout.html')
+
+def wishlist(request):
+    return render(request, 'product/wishlist.html')
+
+def account(request):
+    return render(request, 'account.html')
+
+def about(request):
+    return render(request, 'aboutus.html')
+
+def services(request):
+    return render(request, 'services.html')
+
+def contact(request):
+    return render(request, 'contact.html')
 
 def statistics_view(request):
     data = {
