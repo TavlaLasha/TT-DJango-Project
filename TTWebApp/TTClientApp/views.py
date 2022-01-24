@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum
 from django.utils import timezone
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm, UserLoginForm, PasswordResetFrom, AddProductForm
+from .forms import AddOrderForm, UserRegisterForm, UserLoginForm, PasswordResetFrom, AddProductForm
 from .models import Customercart, Customerwishlist, Orders, Cities, Customers, PaymentType, Status, Orderdetails, Product, Category, Supllier
 from pprint import pprint
 import time
@@ -224,7 +224,7 @@ def productsAdd(request):
         obj = Product()
         obj.productname = request.POST["name"]
         obj.categoryid = Category.objects.get(
-            categoryname=request.POST["id_categoryID"])
+            categoryid=request.POST["categoryID"])
         obj.picture = request.POST["picture"]
         obj.price = request.POST["price"]
         obj.supllierid = Supllier.objects.get(
@@ -273,7 +273,7 @@ def productDetails(request, id=0):
     return render(request, 'products/detailView.html', {'prod': prod})
 
 def cart(request):
-    cartItems = Customercart.objects.all()
+    cartItems = Customercart.objects.get(customerid=4)
     print(cartItems)
     
     return render(request, 'cart/cart.html', {'items': cartItems})
@@ -284,9 +284,27 @@ def wishlist(request):
 
 
 def buy(request):
+    form = AddOrderForm(request.POST)
     if request.method == 'POST':
-        return HttpResponseRedirect('/')
-    return render(request, 'buy/buy.html', {})
+        obj = Orders()
+        obj.cutomerid = Customers.objects.get(firstname='bruh')
+        obj.cityid = Cities.objects.get(cityid=request.POST["cityid"])
+        obj.shippostalcode = request.POST["shippostalcode"]
+        obj.address = request.POST["address"]
+        obj.statusid = Status.objects.get(statusid=request.POST["statusid"])
+        obj.paymenttype = PaymentType.objects.get(paymentid=request.POST["paymenttype"])
+        obj.statusdate = request.POST["statusdate"]
+
+        obj.save()
+
+        messages.success(request, 'Order added successfully')
+        return HttpResponseRedirect('/Buy')
+    else:
+        form = AddOrderForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'buy/buy.html', context)
 class ProductsUpdateView(UpdateView):
     model = models.Product
     fields = '__all__'
@@ -308,5 +326,15 @@ class ProductsPriceChange(UpdateView):
 class OrderCreateView(CreateView):
     model = Orders
     fields = '__all__'
+    # fields = [
+    #     'cutomerid',
+    #     'shippostalcode',
+    #     'address',
+    #     'statusdate'
+    #     ]
     success_url = "/"
     template_name = 'buy/buy.html'
+    # def form_valid(self, form):
+    #     city = get_object_or_404(Cities, slug=self.kwargs['school'])
+    #     form.instance.city = city
+    #     return super(CreateView, self).form_valid(form)

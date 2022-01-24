@@ -23,5 +23,6 @@ urlpatterns = [
     path('Products/details/<int:id>/', views.productDetails, name='product_details'),
     path('Cart', views.cart, name='cart'),
     path('Wishlist', views.wishlist, name='wishlist'),
-    path('Buy', views.OrderCreateView.as_view(), name='buy'),
+    # path('Buy', views.OrderCreateView.as_view(), name='buy'),
+    path('Buy', views.buy, name='buy'),
 ]

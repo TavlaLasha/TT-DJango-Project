@@ -2,15 +2,17 @@ from django import forms
 from django.contrib.auth import (authenticate, get_user_model)
 from django.core.validators import validate_email
 
-from TTClientApp.models import Category, Product
+from TTClientApp.models import Category, Cities, PaymentType, Product, Status, Supllier
 
 User = get_user_model()
 # For Products
-# CHOICES = [Category.objects.all()]
-# # categories = Category.objects.all()
-# # for i in categories:
-# #     CHOICES.append(i.categoryid, i.categoryname)
-# # print(CHOICES)
+
+categories = Category.objects.values_list('categoryid', 'categoryname')
+suppliers = Supllier.objects.values_list('supllierid', 'companyname')
+cities = Cities.objects.values_list('cityid', 'city')
+status = Status.objects.values_list('statusid', 'status')
+paymentTypes = PaymentType.objects.values_list('paymentid', 'payment')
+
 
 
 class UserLoginForm(forms.Form):
@@ -107,19 +109,19 @@ class UserRegisterForm(forms.ModelForm):
 
 class AddProductForm(forms.Form):
     name = forms.CharField(label='Product Name', max_length=80, required=True)
-    # categoryID = forms.ChoiceField(label='Category', choices=[CHOICES], required=True)
-    categoryID = forms.IntegerField(label='Category', required=True)
+    categoryID = forms.ChoiceField(label='Category', choices=categories, required=True)
+    # categoryID = forms.IntegerField(label='Category', required=True)
     picture = forms.FileField(label='Picture', required=True)
     price = forms.FloatField(label='Price', required=False)
-    supplierid = forms.IntegerField(label='Supplier', required=False)
+    # supplierid = forms.IntegerField(label='Supplier', required=False)
+    supplierid = forms.ChoiceField(label='Supplier', choices=suppliers, required=False)
     serialnumber = forms.CharField(label='Serial Number', max_length=50, required=False)
     description = forms.CharField(label='Description', required=False)
 
-    # # productid = models.AutoField(db_column='ProductID', blank=True, primary_key=True)  # Field name made lowercase.
-    # productname = models.CharField(db_column='ProductName', max_length=80)  # Field name made lowercase.
-    # categoryid = models.ForeignKey(Category, db_column='CategoryID', on_delete=models.PROTECT, blank=True)  # Field name made lowercase.
-    # picture = models.CharField(db_column='Picture', max_length=255)  # Field name made lowercase.
-    # price = models.FloatField(db_column='Price', max_length=50, null=True)  # Field name made lowercase.
-    # supllierid = models.ForeignKey(Supllier, db_column='SupllierID', on_delete=models.SET_NULL, blank=True, null=True)  # Field name made lowercase.
-    # serialnumber = models.CharField(db_column='SerialNumber', max_length=50, null=True)  # Field name made lowercase.
-    # discription = models.TextField(db_column='Discription', null=True)  # Field name made lowercase.
+class AddOrderForm(forms.Form):
+    cityid = forms.ChoiceField(label='City', choices=cities, required=True)
+    shippostalcode = forms.CharField(label='Postal Code', required=True)
+    address = forms.CharField(label='Address', required=True)
+    statusid = forms.ChoiceField(label='Status', choices=status, required=True)
+    paymenttype = forms.ChoiceField(label='Payment Type', choices=paymentTypes, required=True)
+    statusdate = forms.CharField(label='Status date', required=True)
